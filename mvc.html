@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        div {
+            margin: 20px;
+            background-color: #eee;
+        }
+
+        div[view] {
+            border: 1px solid #444;
+            padding: 1em;
+        }
+
+    </style>
+    <script>
+
+        var x = 10;
+        console.log(window['x']); // associate array notation
+
+        // create the controllers
+        function controller1() {
+            controller1.scope = {};
+            controller1.scope.message = 'Hello World!';
+        }
+        function controller2() {
+            controller1.scope = {};
+            controller1.scope.name = 'Evan Corley';
+        }
+
+        // run all controllers once so that their properties and methods are set
+        controller1(); controller2();
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // get all views
+            // get all elements within each view and search for templates
+            // replace templates with relevant data
+
+            var allviews = document.querySelectorAll('div[view]');
+            console.log(allviews[0].getAttribute('view'));
+
+
+            // get all elements within the view (search for templates)
+
+            // write a for loop for all the views - all elements in allviews nodelist
+            // write a recursive function for each view
+                // check for textnodes - if they exist, run a match on the regular expression
+                // check for elements - call the recursive function for each of them
+
+            for (var i = 0, len = allviews.length; i < len; i++) {
+                recl(allviews[i]);
+            }
+
+            function recl(node) {
+                for (var i = 0, len = node.childNodes.length; i < len; i++) {
+                    var childNode = node.childNodes[i];
+                    console.log('type: ' + childNode.nodeType);
+                    console.log(childNode);
+
+                    if (childNode.nodeType === 3) {
+                        // run a regular expression test regex.test(childNode's text content)
+                    } else {
+                        if (childNode.nodeType === 1) {
+                            recl(childNode);
+                        }
+                    }
+                }
+            }
+
+
+
+            var regex = /\s*{{\s*([0-9a-zA-Z_$]+)\s*}}\s*/gmi;
+            console.log(regex.exec('{{message}}')[1]);
+
+        });
+    </script>
+</head>
+<body>
+    <div>
+        <div view="controller1">
+            {{message}}
+            <div>
+                <div>
+                    asdfasdfasdf
+                </div>
+            </div>
+            <div>{{ message }}</div>
+            <div>
+                <div>
+                    {{message}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        sadfsadf
+    </div>
+
+    <div view="controller2">
+        {{name}}
+    </div>
+</body>
+</html>
